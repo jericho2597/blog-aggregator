@@ -5,11 +5,18 @@
   "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "docker build -t crawler:latest . && docker run -p 3000:3000 crawler:latest"
+    "dev": "docker build -t crawler:latest . && docker run -p 3000:3000 -v /c/Users/jeric/.aws:/root/.aws:ro crawler:latest",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^20.10.5",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.481.0",
+    "@aws-sdk/lib-dynamodb": "^3.481.0",
+    "rss-parser": "^3.13.0"
   }
 }

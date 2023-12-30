@@ -20,6 +20,4 @@ RUN npm install --only=production
 
 COPY --from=builder /usr/src/app/dist ./dist
 
-RUN ls
-
 CMD ["node", "dist/main.js"]
