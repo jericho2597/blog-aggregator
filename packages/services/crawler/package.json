@@ -17,6 +17,8 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.481.0",
     "@aws-sdk/lib-dynamodb": "^3.481.0",
+    "cheerio": "^1.0.0-rc.12",
+    "openai": "^4.24.1",
     "rss-parser": "^3.13.0"
   }
 }

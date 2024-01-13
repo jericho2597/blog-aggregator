@@ -1,8 +1,11 @@
 import { querySources } from "./dynamo/dynamo";
 import { refreshFromRSS } from "./adapter/rss";
+import { refreshFromYoutube } from "./adapter/youtube";
+import { refreshFromWebpage } from "./adapter/web";
+import { SourceItem } from "./types/dynamo-schema";
 
 const runBlogRefresh = async () => {
-  const sources = await querySources();
+  const sources: SourceItem[] | undefined = await querySources();
 
   if (sources == undefined) {
     console.error("Could not retrieve sources from DynamoDB");
@@ -10,12 +13,23 @@ const runBlogRefresh = async () => {
   }
 
   sources.forEach((source) => {
-    const content = refreshFromRSS(source.SK);
+    if (source.type == "rss") {
+      // refresh source using RSS feed endpoint
+      refreshFromRSS(source.SK);
+    } else if (source.type == "youtube") {
+      // refresh source using youtube API
+      refreshFromYoutube(source.SK);
+    } else if (source.type == "web") {
+      // refresh source by crawling page
+      if (!source.content_url_pattern) {
+        console.error(
+          "Could not find regex pattern used to discover content for this source."
+        );
+        return;
+      }
+      refreshFromWebpage(source.SK, new RegExp(source.content_url_pattern));
+    }
   });
-  // refresh source links
-  // write source links back to dynamoDB
-  // read unread articles/blogs from dynamoDB
-  // get content from articles/blogs and write to dynamoDB
 };
 
 runBlogRefresh();
