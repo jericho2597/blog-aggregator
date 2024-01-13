@@ -1,7 +1,7 @@
 type SourceType = "rss" | "youtube" | "web";
 
 export type SourceItem = {
-  PK: "string";
+  PK: "source";
   SK: string;
   type: SourceType;
   content_url_pattern?: string;
